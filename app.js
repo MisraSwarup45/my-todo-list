@@ -68,9 +68,12 @@ app.get("/", (req, res) => {
 
 
     });
-    let day = date.getDate();
+    // let day = date.getDate();
 
 });
+
+
+
 
 
 
@@ -91,13 +94,13 @@ app.post("/", (req, res) => {
 app.post("/delete", (req, res) => {
     const checkedItemId = req.body.checkbox;
     // console.log(checkedItemId);
-
-    Item.findByIdAndRemove(checkedItemId, (err, docs) => {
+    
+    Item.findByIdAndRemove(checkedItemId, (err)=> {
         if(err){
             console.log(err);
         }
         else{
-            console.log("Successfully deleted ", docs);
+            // console.log("Successfully deleted ");
             res.redirect("/");
         }
     });
