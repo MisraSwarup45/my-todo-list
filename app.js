@@ -49,24 +49,24 @@ const defaultItems = [item1, item2, item3];
 app.get("/", (req, res) => {
 
     Item.find({}, (err, foundItems) => {
-        console.log(foundItems);
+        // console.log(foundItems);
 
         if (foundItems.length === 0) {
-            Item.insertMany(defaultItems, (err)=>{
-                if(err){
+            Item.insertMany(defaultItems, (err) => {
+                if (err) {
                     console.log(err);
                 }
-                else{
+                else {
                     console.log("successfully added to the database");
                 }
             });
             res.redirect("/");
         }
-        else{
+        else {
             res.render("list", { listTitle: "Today", newListItems: foundItems });
         }
 
-        
+
     });
     let day = date.getDate();
 
@@ -76,20 +76,31 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
 
-    var item = req.body.newItem;
+    var itemName = req.body.newItem;
 
-    // console.log(req.body.list);
+    const item = new Item({
+        name: itemName
+    });
 
-    if (req.body.list === "Work") {
-        workItems.push(item);
-        res.redirect("/work");
-    }
-    else {
-        items.push(item);
-        res.redirect("/");
-    }
+    item.save();
 
+    res.redirect("/");
 
+});
+
+app.post("/delete", (req, res) => {
+    const checkedItemId = req.body.checkbox;
+    // console.log(checkedItemId);
+
+    Item.findByIdAndRemove(checkedItemId, (err, docs) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("Successfully deleted ", docs);
+            res.redirect("/");
+        }
+    });
 });
 
 
