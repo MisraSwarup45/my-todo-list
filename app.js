@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'images')));
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
 // const workItems = [];
 
-mongoose.connect("mongodb://localhost:27017/todolistDB", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://misraswarup45:Gamodemy2003@cluster0.ywk9vct.mongodb.net/todolistDB", { useNewUrlParser: true });
 
 
 const itemsSchema = {
@@ -168,6 +168,6 @@ app.get("/work", (req, res) => {
 //     res.redirect("/work");
 // })
 
-app.listen(3000, () => {
+app.listen(process.env.PORT ||3000, () => {
     console.log("Server Started at Port 3000");
 })
