@@ -20,9 +20,6 @@ app.use(express.static("public"));
 app.use(express.static(path.join(__dirname, 'images')));
 
 
-// const items = ["Buy Food", "Cook Food", "Eat Food"];
-// const workItems = [];
-
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 
