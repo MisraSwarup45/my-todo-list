@@ -7,6 +7,9 @@ const _ = require("lodash");
 const path = require("path");
 const { response } = require("express");
 const date = require(__dirname + "/date.js");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 
@@ -20,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'images')));
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
 // const workItems = [];
 
-mongoose.connect("mongodb+srv://misraswarup45:Gamodemy2003@cluster0.ywk9vct.mongodb.net/todolistDB", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 
 const itemsSchema = {
