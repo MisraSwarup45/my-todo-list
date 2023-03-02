@@ -30,20 +30,7 @@ const itemsSchema = {
 const Item = mongoose.model("Item", itemsSchema);
 
 
-
-const item1 = new Item({
-    name: "Welcome to your Todo List"
-});
-
-const item2 = new Item({
-    name: "Hit the + button to add a new item"
-});
-
-const item3 = new Item({
-    name: "<-- Hit the button to delete the item"
-});
-
-const defaultItems = [item1, item2, item3];
+const defaultItems = [];
 
 
 const listSchema = {
@@ -55,36 +42,14 @@ const listSchema = {
 const List = mongoose.model("List", listSchema);
 
 app.get("/", (req, res) => {
-
     Item.find({}, (err, foundItems) => {
-        // console.log(foundItems);
-
-        if (foundItems.length === 0) {
-            Item.insertMany(defaultItems, (err) => {
-                if (err) {
-                    console.log(err);
-                }
-                else {
-                    console.log("successfully added to the database");
-                }
-            });
-            res.redirect("/");
-        }
-        else {
-            res.render("list", { listTitle: "Today", newListItems: foundItems });
-        }
-
-
+        res.render("list", { listTitle: "Today", newListItems: foundItems });
     });
-    // let day = date.getDate();
-
 });
 
 
 app.get("/:customListName", (req, res) => {
     const customListName = _.capitalize(req.params.customListName);
-    // console.log(customListName);
-
     List.findOne({ name: customListName }, (err, foundList) => {
         if (!err) {
             if (!foundList) {
@@ -92,7 +57,6 @@ app.get("/:customListName", (req, res) => {
                     name: customListName,
                     items: defaultItems
                 });
-
                 list.save();
                 res.redirect("/" + customListName);
             }
@@ -137,7 +101,7 @@ app.post("/delete", (req, res) => {
     const listName = req.body.listName;
     // console.log(checkedItemId);
 
-    if(listName === "Today"){
+    if (listName === "Today") {
         Item.findByIdAndRemove(checkedItemId, (err) => {
             if (err) {
                 console.log(err);
@@ -148,9 +112,9 @@ app.post("/delete", (req, res) => {
             }
         });
     }
-    else{
-        List.findOneAndUpdate({name: listName},{$pull: {items: {_id: checkedItemId}}}, (err, foundList)=>{
-            if(!err){
+    else {
+        List.findOneAndUpdate({ name: listName }, { $pull: { items: { _id: checkedItemId } } }, (err, foundList) => {
+            if (!err) {
                 res.redirect("/" + listName);
             }
         });
@@ -168,6 +132,6 @@ app.get("/work", (req, res) => {
 //     res.redirect("/work");
 // })
 
-app.listen(process.env.PORT ||3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("Server Started at Port 3000");
 })
